@@ -1,15 +1,29 @@
 const { AuthenticatorError } = require('apollo-server-express'); 
 const { User } = require('../models');
+const { signToken } = require('../utils/auth');
 
 const resolvers = { 
     Query: {
         me: async (parent, args, context) => {
             if (context.user) {
-                return User.find({ _id: context.user._id });
-            }
-            throw new AuthenticationError('Log in!');
+                const userData = await User.findOne({ _id: context.user._id });
+                return userData;
         }
     },
+
+    users: async () => {
+        return await User.find.select('-__v -password').populate('savedBooks');
+    },
+    user: async (parent, { username }) => {
+        return await User.findOne({ username }).select('-__v -password').populate('saveBooks');
+    }
+},
+
+     
+    
+    
+    
+    
     Mutation: {
         login: async (parent, { email, password }) => {
             const user = await user.findOne({ email });
