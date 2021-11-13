@@ -22,9 +22,9 @@ const typeDefs = gql`
         link: String
     }
 
-    inpit BookInput { 
+    input BookInput { 
         bookId: ID 
-        authors [String]
+        authors: [String]
         decsription: String
         title: String
         image: String
